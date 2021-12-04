@@ -4,7 +4,10 @@ struct chat_t {
     GtkWidget *entry;
     GtkWidget *textview;
 };
-
+enum {
+    LIST_ITEM = 0,
+    N_COLUMNS
+};
 void chatMSG ( GtkButton *, chat_t * );
 
 int main ( int argc, char **argv ) {
@@ -18,7 +21,7 @@ int main ( int argc, char **argv ) {
     g_signal_connect ( G_OBJECT ( window ), "delete_event", gtk_main_quit, NULL );
     gtk_window_set_title ( GTK_WINDOW ( window ), "WhatsChat" );
     gtk_container_set_border_width ( GTK_CONTAINER ( window ), 0 );
-    gtk_widget_set_size_request ( window, 350, 250 );
+    gtk_widget_set_size_request ( window, 450, 250 );
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
     // *** //
     chat->textview = gtk_text_view_new();
@@ -58,7 +61,22 @@ int main ( int argc, char **argv ) {
     vbox = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 0 );
     gtk_box_pack_start ( GTK_BOX ( vbox ), scrolled_win, TRUE, TRUE, 0 );
     gtk_box_pack_start ( GTK_BOX ( vbox ), hbox, FALSE, TRUE, 0 );
-    gtk_container_add ( GTK_CONTAINER ( window ), vbox );
+    // *** //
+    GtkWidget *gbox = gtk_box_new ( GTK_ORIENTATION_VERTICAL, 0 );
+    GtkWidget *list = gtk_tree_view_new();
+    //gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(list), FALSE);
+    GtkCellRenderer *renderer = gtk_cell_renderer_text_new ();
+    GtkTreeViewColumn *column = gtk_tree_view_column_new_with_attributes("Topics", renderer, "text", LIST_ITEM, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(list), column);
+    GtkListStore *store = gtk_list_store_new(N_COLUMNS, G_TYPE_STRING);
+    gtk_tree_view_set_model(GTK_TREE_VIEW(list), GTK_TREE_MODEL(store));
+    gtk_box_pack_start(GTK_BOX(gbox), list, TRUE, TRUE, 0);
+    g_object_unref(store);
+    // *** //
+    GtkWidget *xbox = gtk_box_new ( GTK_ORIENTATION_HORIZONTAL, 0 );
+    gtk_box_pack_start ( GTK_BOX ( xbox ), vbox, FALSE, TRUE, 0 );
+    gtk_box_pack_start ( GTK_BOX ( xbox ), gbox, FALSE, TRUE, 1 );
+    gtk_container_add ( GTK_CONTAINER ( window ), xbox );
     // *** //
 
     gtk_widget_show_all ( window );
