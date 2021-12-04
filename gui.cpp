@@ -46,6 +46,20 @@ int main ( int argc, char **argv ) {
     gtk_container_set_border_width ( GTK_CONTAINER ( window ), 0 );
     gtk_widget_set_size_request ( window, 550, 250 );
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+
+    if ( ! g_file_test ("topics.json", G_FILE_TEST_EXISTS) ) {
+        GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, (gchar *)"topics.json is not found.");
+        gtk_window_set_title(GTK_WINDOW(dialog), "Error");
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_destroy (dialog);
+        return 0;
+    }
+    if (g_file_test ("favicon.png",G_FILE_TEST_EXISTS)) {
+        GdkPixbuf *icon = gdk_pixbuf_new_from_file("favicon.png", NULL);
+        if (icon) {
+            gtk_window_set_icon(GTK_WINDOW(window), icon);
+        }
+    }
     // *** //
     chat->textview = gtk_text_view_new();
     gtk_text_view_set_editable ( GTK_TEXT_VIEW ( chat->textview ), FALSE );
