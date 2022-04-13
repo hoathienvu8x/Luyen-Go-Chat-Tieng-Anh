@@ -36,114 +36,114 @@ của tập tin với nội dung như sau
 ```JSON
 [
     {
-        "en":"Hello",
-        "vi":"Xin Chào",
+        "source":"Hello",
+        "destination":"Xin Chào",
         "data":[
             {
-                "en":"Hey man.",
-                "vi":"Ê anh bạn, hoặc Chào."
+                "source":"Hey man.",
+                "destination":"Ê anh bạn, hoặc Chào."
             },
             {
-                "en":"How's it going? or How are you doing?",
-                "vi":"Dạo này bạn thế nào?"
+                "source":"How's it going? or How are you doing?",
+                "destination":"Dạo này bạn thế nào?"
             },
             {
-                "en":"What's up?, What's new?, or What's going on?",
-                "vi":"Có chuyện gì đó? Có gì mới không? Có chuyện gì vậy ạ?"
+                "source":"What's up?, What's new?, or What's going on?",
+                "destination":"Có chuyện gì đó? Có gì mới không? Có chuyện gì vậy ạ?"
             },
             {
-                "en":"How's everything ?",
-                "vi":"Mọi thứ sao?"
+                "source":"How's everything ?",
+                "destination":"Mọi thứ sao?"
             },
             {
-                "en":"How's it going?",
-                "vi":"Dạo này bạn thế nào rồi?"
+                "source":"How's it going?",
+                "destination":"Dạo này bạn thế nào rồi?"
             },
             {
-                "en":"Haven't seen you for a long time.",
-                "vi":"Lâu rồi không gặp bạn."
+                "source":"Haven't seen you for a long time.",
+                "destination":"Lâu rồi không gặp bạn."
             },
             {
-                "en":"Nice to meet you.",
-                "vi":"Rất vui khi gặp bạn."
+                "source":"Nice to meet you.",
+                "destination":"Rất vui khi gặp bạn."
             }
         ]
     },
     {
-        "en":"Goodbye"
-        "vi":"Tạm Biệt",
+        "source":"Goodbye"
+        "destination":"Tạm Biệt",
         "data":[
             {
-                "en":"Bye!",
-                "vi":"Tạm biệt!"
+                "source":"Bye!",
+                "destination":"Tạm biệt!"
             },
             {
-                "en":"Goodbye!",
-                "vi":"Tạm biệt nhé!"
+                "source":"Goodbye!",
+                "destination":"Tạm biệt nhé!"
             },
             {
-                "en":"Bye for now!",
-                "vi":"Tạm biệt nhé!"
+                "source":"Bye for now!",
+                "destination":"Tạm biệt nhé!"
             },
             {
-                "en":"See you!",
-                "vi":"Tạm biệt bạn."
+                "source":"See you!",
+                "destination":"Tạm biệt bạn."
             },
             {
-                "en":"Be seeing you!",
-                "vi":"Hẹn gặp lại!"
+                "source":"Be seeing you!",
+                "destination":"Hẹn gặp lại!"
             },
             {
-                "en":"See you soon!",
-                "vi":"Mong sớm gặp lại bạn!"
+                "source":"See you soon!",
+                "destination":"Mong sớm gặp lại bạn!"
             },
             {
-                "en":"I'm off.",
-                "vi":"Tôi đi đây."
+                "source":"I'm off.",
+                "destination":"Tôi đi đây."
             },
             {
-                "en":"Catch you later!",
-                "vi":"Gặp lại bạn sau!"
+                "source":"Catch you later!",
+                "destination":"Gặp lại bạn sau!"
             },
             {
-                "en":"Good night!",
-                "vi":"Chúc ngủ ngon!"
+                "source":"Good night!",
+                "destination":"Chúc ngủ ngon!"
             },
             {
-                "en":"Farewell.",
-                "vi":"Tạm biệt!"
+                "source":"Farewell.",
+                "destination":"Tạm biệt!"
             },
             {
-                "en":"So long.",
-                "vi":"Tạm biệt!"
+                "source":"So long.",
+                "destination":"Tạm biệt!"
             },
             {
-                "en":"Alright then.",
-                "vi":"Tạm biệt!"
+                "source":"Alright then.",
+                "destination":"Tạm biệt!"
             },
             {
-                "en":"Have a good one.",
-                "vi":"Chúc một ngày tốt lành."
+                "source":"Have a good one.",
+                "destination":"Chúc một ngày tốt lành."
             },
             {
-                "en":"See you later.",
-                "vi":"Gặp lại bạn sau"
+                "source":"See you later.",
+                "destination":"Gặp lại bạn sau"
             },
             {
-                "en":"Talk to you later."
-                "vi":"Nói chuyện với bạn sau nhé!"
+                "source":"Talk to you later."
+                "destination":"Nói chuyện với bạn sau nhé!"
             },
             {
-                "en":"Later!",
-                "vi":"Gặp lại sau!"
+                "source":"Later!",
+                "destination":"Gặp lại sau!"
             },
             {
-                "en":"Smell you later.",
-                "vi":"Hẹn gặp lại bạn sau."
+                "source":"Smell you later.",
+                "destination":"Hẹn gặp lại bạn sau."
             },
             {
-                "en":"Peace!",
-                "vi":"Tạm biệt!"
+                "source":"Peace!",
+                "destination":"Tạm biệt!"
             }
         ]
     }
