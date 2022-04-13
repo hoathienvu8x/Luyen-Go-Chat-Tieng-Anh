@@ -55,14 +55,18 @@ int main ( int argc, char **argv ) {
     gtk_widget_set_size_request ( window, 550, 250 );
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
 
-    if ( ! g_file_test (g_strdup_printf("topics_%s.json", current_language.c_str()), G_FILE_TEST_EXISTS) ) {
+    if ( ! g_file_test (g_strdup_printf("data/topics_%s.json", current_language.c_str()), G_FILE_TEST_EXISTS) ) {
         bool found = true;
-        if ( ! g_file_test ("topics.json", G_FILE_TEST_EXISTS) ) {
+        if ( ! g_file_test ("data/topics.json", G_FILE_TEST_EXISTS) ) {
             found = false;
         }
         if (found == false) {
-            gchar *dialog_text = g_strdup_printf("topics_%s.json is not found.", current_language.c_str());
-            GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, (gchar *)dialog_text);
+            GtkWidget *dialog;
+            if (current_language == "fr") {
+                dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, (gchar *)"data/topics_fr.json is not found.");
+            } else {
+                dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, (gchar *)"data/topics_en.json or data/topics.json is not found.");
+            }
             gtk_window_set_title(GTK_WINDOW(dialog), "Error");
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy (dialog);
@@ -163,10 +167,10 @@ int main ( int argc, char **argv ) {
     // *** //
     gtk_container_add ( GTK_CONTAINER ( window ), wbox );
     // *** //
-    if (g_file_test (g_strdup_printf("topics_%s.json", current_language.c_str()), G_FILE_TEST_EXISTS)) {
-        topics = load_topics( "topics_"+current_language+".json" );
+    if (g_file_test (g_strdup_printf("data/topics_%s.json", current_language.c_str()), G_FILE_TEST_EXISTS)) {
+        topics = load_topics( "data/topics_"+current_language+".json" );
     } else {
-        topics = load_topics( "topics.json" );
+        topics = load_topics( "data/topics.json" );
     }
 
     if ( topics.size() > 0 ) {
@@ -250,24 +254,52 @@ void chatMSG ( GtkButton *button, chat_t *chat ) {
 void change_language(GtkWidget *view, gpointer obj) {
     (void)view;
     change_t *gobj = (change_t *)obj;
-    if ( g_file_test (g_strdup_printf("topics_%s.json", gobj->lang.c_str()), G_FILE_TEST_EXISTS) ) {
+    if (!gobj) return;
+    std::string lang = gobj->lang;
+    std::string filename = "";
+    if ( g_file_test (g_strdup_printf("data/topics_%s.json", lang.c_str()), G_FILE_TEST_EXISTS) ) {
+        filename = "data/topics_"+lang+".json";
+    } else {
+        if (lang == "en") {
+            if ( g_file_test ("data/topics.json", G_FILE_TEST_EXISTS) ) {
+                filename = "data/topics.json";
+            }
+        }
+    }
+    if (filename.size() > 0) {
         current_language = gobj->lang;
-        topics = load_topics( "topics_"+current_language+".json" );
+        topics = load_topics( filename );
         if ( topics.size() > 0 ) {
             GtkListStore *store = GTK_LIST_STORE(gtk_tree_view_get_model ( GTK_TREE_VIEW(gobj->list) ) );
             GtkTreeIter iter;
+            GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(gobj->list));
+            /* https://zetcode.com/gui/gtk2/gtktreeview/ */
+            if (gtk_tree_model_get_iter_first(model, &iter) == TRUE) {
+                gtk_list_store_clear(store);
+            }
             for (size_t i = 0; i < topics.size(); i++) {
                 gtk_list_store_append(store, &iter);
                 gtk_list_store_set(store, &iter, LIST_ITEM, (gchar *)topics[i].topic.source.c_str(), LIST_INDEX, (guint)i, -1);
             }
+            initBotMessage( gobj->chat->textview, (gchar *)NULL);
             if (current_language == "fr") {
                 initBotMessage( gobj->chat->textview, (gchar *)"Bienvenue monsieur, veuillez sélectionner le sujet à apprendre.");
             } else {
                 initBotMessage( gobj->chat->textview, (gchar *)"Welcome back sir, please select topic to learning.");
             }
-        } 
+        } else {
+            if (current_language == "fr") {
+                gtk_label_set_text(GTK_LABEL(gobj->chat->label), (gchar*)"Aucun sujet");
+            } else {
+                gtk_label_set_text(GTK_LABEL(gobj->chat->label), (gchar*)"No topics");
+            }
+        }
     } else {
-        gtk_label_set_text(GTK_LABEL(gobj->chat->label), (gchar*)"Aucun sujet");
+        if (gobj->lang == "en") {
+            gtk_label_set_text(GTK_LABEL(gobj->chat->label), (gchar*)"No data");
+        } else {
+            gtk_label_set_text(GTK_LABEL(gobj->chat->label), (gchar*)"Aucune donnée");
+        }
     }
 }
 void change_topic(GtkWidget *listview, gpointer view) {
@@ -292,6 +324,12 @@ void change_topic(GtkWidget *listview, gpointer view) {
 }
 void initBotMessage( GtkWidget *view, gchar *message ) {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer ( GTK_TEXT_VIEW ( view ) );
+    if (message == NULL) {
+        GtkTextIter start, end;
+        gtk_text_buffer_get_bounds(buffer, &start, &end);
+        gtk_text_buffer_delete (buffer, &start, &end);
+        return;
+    }
     GtkTextMark *mark = gtk_text_buffer_get_insert ( buffer );
     GtkTextIter iter;
     gtk_text_buffer_get_iter_at_mark ( buffer, &iter, mark );
